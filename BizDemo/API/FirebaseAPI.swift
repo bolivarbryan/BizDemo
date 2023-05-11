@@ -14,12 +14,13 @@ enum FirebaseAPI {
     case findCompany(nit: String, ((Company?) -> ()))
     case findProduct(name: String)
     case listProducts(products: ([Product]) -> ())
+    case saveProduct(product: Product)
     
     private var endpoint: String {
         switch self {
         case .findCompany:
             return "companies"
-        case .findProduct, .listProducts:
+        case .findProduct, .listProducts, .saveProduct:
             return "products"
         case .saveCompany:
             return "companies"
@@ -31,7 +32,7 @@ enum FirebaseAPI {
         return db.collection(endpoint)
     }
     
-    private var data: [String: String] {
+    private var data: [String: Any] {
         switch self {
         case .findCompany(let nit, _):
             return ["nit": nit]
@@ -41,12 +42,14 @@ enum FirebaseAPI {
             return ["name": name]
         case .listProducts:
             return [:]
+        case .saveProduct(product: let product):
+            return product.dictionaryRepresentation
         }
     }
     
     func execute() {
         switch self {
-        case .saveCompany(company: let company):
+        case .saveCompany:
             var ref: DocumentReference? = nil
             ref = query.addDocument(data: data) { err in
                 if let err = err {
@@ -86,7 +89,7 @@ enum FirebaseAPI {
                     response(data)
                 }
             }
-        case .findProduct(name: let name):
+        case .findProduct:
             break
         case .listProducts(let response):
             query.getDocuments() { (querySnapshot, err) in
@@ -104,6 +107,15 @@ enum FirebaseAPI {
                     print(data)
                     
                  response(data)
+                }
+            }
+        case .saveProduct:
+            var ref: DocumentReference? = nil
+            ref = query.addDocument(data: data) { err in
+                if let err = err {
+                    print("Error adding document: \(err)")
+                } else {
+                    print("Document added with ID: \(ref!.documentID)")
                 }
             }
         }

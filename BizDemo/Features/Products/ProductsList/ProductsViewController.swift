@@ -24,9 +24,10 @@ class ProductsViewController: UIViewController {
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         presenter?.loadProducts()
-        let productsView = ProductsListView(products: products)
-        setBaseView(productsView)
     }
 
     // MARK: - Properties
@@ -38,5 +39,14 @@ extension ProductsViewController: PresenterToViewProductsProtocol{
     func didLoadProducts(products: [Product]) {
         print(products)
         self.products = products
+        let productsView = ProductsListView(products: products) {
+            self.presentNewProductForm()
+        }
+        setBaseView(productsView)
+    }
+    
+    func presentNewProductForm() {
+        let router = NewProductRouter.createModule()
+        self.navigationController?.pushViewController(router, animated: true)
     }
 }

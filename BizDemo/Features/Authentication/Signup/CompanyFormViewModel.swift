@@ -9,12 +9,13 @@ import SwiftUI
 import Combine
 
 class CompanyFormViewModel: ObservableObject {
-    @Published var companyName: String = "code"
-    @Published var companyAddress: String = "Calle 123 # 54-67"
-    @Published var companyPhone: String = "3002771564"
-    @Published var companyCity: String = "Barranquilla"
-    @Published var companyNit: String = "123456"
+    @Published var companyName: String = ""
+    @Published var companyAddress: String = ""
+    @Published var companyPhone: String = ""
+    @Published var companyCity: String = ""
+    @Published var companyNit: String = ""
     @Published private var selectedCountry: Country = .colombia
+    
     var createCompanyAction: (Company) -> Void
     
     init(createCompanyAction: @escaping (Company) -> Void) {

@@ -33,6 +33,7 @@ class SignInViewModel: ObservableObject {
                 return
             }
             self.signInResponse(nil)
+            LocalPersistance.store(key: PersistanceKey.nit, value: self.companyNit)
         }.execute()
     }
 }

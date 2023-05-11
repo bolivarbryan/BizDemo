@@ -24,7 +24,8 @@ class ProductsRouter: PresenterToRouterProductsProtocol {
         viewController.presenter?.interactor = ProductsInteractor()
         viewController.presenter?.interactor?.presenter = presenter
         
-        return viewController
+        let navigationController = UINavigationController(rootViewController: viewController)
+        viewController.title = Language.products.localized
+        return navigationController
     }
-    
 }

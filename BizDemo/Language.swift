@@ -24,6 +24,10 @@ enum Language: String {
     case nitNotFound = "Nit not found, please check if you typed it correctly"
     case error = "Error"
     case welcome = "Welcome"
+    case products = "Products"
+    case about = "About"
+    case price = "Price"
+    case newProduct = "New Product"
 }
 
 extension Language {
